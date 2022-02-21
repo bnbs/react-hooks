@@ -35,8 +35,8 @@ function Board({ selectSquare, squares }) {
 }
 
 function Game() {
-  const [history, setHistory] = useLocalStorageState('game-history', [Array(9).fill(null)]);
-  const [currentStep, setCurrentStep] = useLocalStorageState('game-step', 0);
+  const [history, setHistory] = useLocalStorageState('tic-tac-toe:history', [Array(9).fill(null)]);
+  const [currentStep, setCurrentStep] = useLocalStorageState('tic-tac-toe:step', 0);
 
   const squares = history[currentStep];
   const nextValue = calculateNextValue(squares);
@@ -57,17 +57,17 @@ function Game() {
 
   function restart() {
     setCurrentStep(0);
-    setHistory(Array(9).fill(null))
+    setHistory([Array(9).fill(null)])
   }
 
-  const moves = history.map((_, index) => {
+  const moves = history.map((step, index) => {
     const isCurrentStep = currentStep === index;
 
     let text = index === 0 ? 'Go to game start' : `Go to move #${index}`;
     if (isCurrentStep) text = text.concat(' (current)');
 
     return (
-      <li>
+      <li key={step}>
         <button disabled={isCurrentStep} onClick={() => setCurrentStep(index)}>
           {text}
         </button>
